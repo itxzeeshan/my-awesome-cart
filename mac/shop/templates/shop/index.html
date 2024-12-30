@@ -92,7 +92,7 @@ if (localStorage.getItem('cart') == null) {
     document.getElementById('cart').innerHTML = Object.keys(cart).length;
     updateCart(cart);
 }
-// If the add to cart button is clicked, add/increment the item
+// If the add to cart button is clicked, add/increment the item ....
 $('.cart').click(function() {
     var idstr = this.id.toString();
     if (cart[idstr] != undefined) {
