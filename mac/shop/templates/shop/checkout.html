@@ -3,14 +3,18 @@
 {% block title %} Checkout - MyAwesomeCart {% endblock %}
 {% block body %} 
 
-<div class="container">
-    <div class="col my-4">
-    <h2>Step 1 - MyAwesomeCart Express Checkout - Review Your Cart Items</h2>
-    <div>
-        <ul class="list-group" id="items">
-          </ul>
-    </div>
-</div>
+<div class="col my-4">
+  <h2>Step 1 - My Awesome Cart Express Checkout - Review Your Cart Items</h2>
+  <div class="my-4">
+      <ul class="list-group" id="items">
+      </ul>
+      <nav aria-label="breadcrumb">
+          <ol class="breadcrumb mt-3">
+              <li class="breadcrumb-item active" aria-current="page">Your Cart Total Is <b>Rs.<span id="totalPrice"></b>  </span>Enter your details below & place your order. Thanks for using My Awesome Cart!</li>
+          </ol>
+      </nav>
+  </div>    
+  </div>
     <div class="col my-4">
     <h2>Step 2 - Enter Address & Other Details:</h2>
     <form method="post" action="/shop/checkout/" class="row g-3">{% csrf_token %}
@@ -65,24 +69,27 @@
 }
 console.log(cart);
 var sum = 0;
-if ($.isEmptyObject(cart)){
+var totalPrice = 0;
+if ($.isEmptyObject(cart)) {
     //if object is empty
-    mystr = `<p>Your cart s empty please add some items to your cart beforechecking out</p>`
+    mystr = `<p>Your cart is empty, please add some items to your cart before checking out!</p>`
     $('#items').append(mystr);
-}
-else{
-for(item in cart){
-    let name = cart[item][1];
-    let qty = cart[item][0];
-    sum = sum + qty;
-    mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
-              ${name}
-              <span class="badge bg-primary rounded-pill">${qty}</span>
-            </li>`
-    $('#items').append(mystr);
-}
+} else {
+    for (item in cart) {
+        let name = cart[item][1];
+        let qty = cart[item][0];
+        let itemPrice = cart[item][2];
+        sum = sum + qty;
+        totalPrice = totalPrice + qty * itemPrice
+        mystr = `<li class="list-group-item d-flex justify-content-between align-items-center">
+                    ${name}
+                    <span class="badge badge-primary badge-pill">${qty}</span>
+                </li>`
+        $('#items').append(mystr);
+    }
 }
 document.getElementById('cart').innerHTML = sum;
+document.getElementById('totalPrice').innerHTML = totalPrice;
 $('#itemsJson').val(JSON.stringify(cart));
 {% if thank %}
 alert('Thanks for ordering with us. Your order is {{id}}. Use it to track your order using our order tracker');
